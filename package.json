@@ -31,6 +31,7 @@
     "openbridge-css": "^0.2.2",
     "openbridge-web-components": "^0.2.2",
     "papaparse": "^5.4.1",
+    "pbjs": "^0.0.14",
     "precompiled-mqtt": "^4.3.13",
     "protobufjs": "^7.2.5",
     "protobufjs-cli": "^1.1.2",

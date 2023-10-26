@@ -48,7 +48,6 @@ export default function ConnKeelson() {
       // Decode the buffer back into a message
       const decodedMessage = Envelope.decode(bytes)
 
-      
 
       protobuf.load(primitives, function (err, root) {
         // Get a reference to your message type

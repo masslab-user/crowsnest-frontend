@@ -66,64 +66,7 @@ export const protoParser = selector({
   get: () => {
     return null
   },
-  set: ({ get, set }, latestMsg) => {
-    switch (latestMsg.keyExpression) {
-      case latestMsg.keyExpression.match(
-        /^rise\/masslab\/haddock\/masslab-5\/lever_position_pct\/arduino\/left\/azimuth\/vertical/
-      )?.input: {
-        set(atomKeelsonKeyExpressionHandled, currentObj => ({
-          ...currentObj,
-          [latestMsg.keyExpression]: {
-            time_received: new Date(),
-            count: currentObj[latestMsg.keyExpression]?.count ? currentObj[latestMsg.keyExpression].count + 1 : 1,
-          },
-        }))
-
-        let lastValue = get(atom_OS_AZIMUTH_LEFT)
-        if (lastValue.vertical !== latestMsg.payload) {
-          
-          set(atom_OS_AZIMUTH_LEFT, currentObj => ({
-            ...currentObj,
-            vertical: latestMsg.payload,
-          }))
-        }
-
-        break
-      }
-
-      case latestMsg.keyExpression.match(
-        /^rise\/masslab\/haddock\/masslab-5\/lever_position_pct\/arduino\/left\/azimuth\/horizontal/
-      )?.input: {
-        set(atomKeelsonKeyExpressionHandled, currentObj => ({
-          ...currentObj,
-          [latestMsg.keyExpression]: {
-            time_received: new Date(),
-            count: currentObj[latestMsg.keyExpression]?.count ? currentObj[latestMsg.keyExpression].count + 1 : 1,
-          },
-        }))
-
-        set(atom_OS_AZIMUTH_LEFT, currentObj => ({
-          ...currentObj,
-          horizontal: latestMsg.payload,
-        }))
-
-        break
-      }
-
-      
-
-      default: {
-        set(atomKeelsonKeyExpressionUnmanaged, currentObj => ({
-          ...currentObj,
-          [latestMsg.keyExpression]: {
-            time_received: new Date(),
-            count: currentObj[latestMsg.keyExpression]?.count ? currentObj[latestMsg.keyExpression].count + 1 : 1,
-          },
-        }))
-        break
-      }
-    }
-  },
+  set: async ({ get, set }, latestMsg) => {},
 })
 
 export const messageParser = selector({
@@ -136,6 +79,17 @@ export const messageParser = selector({
     const MQTT_PLATFORM_ID = activPlatformObj.MQTTpath
 
     switch (latestMessage.topic) {
+      case latestMessage.topic.match(/^rise\/masslab\/haddock\/masslab-5\/lever_position_pct\/arduino\/right\/azimuth\/vertical/)
+        ?.input: {
+        set(atom_OS_AZIMUTH_LEFT, currentObj => ({
+          ...currentObj,
+
+          vertical: latestMessage.payload.value,
+        }))
+
+        break
+      }
+
       // AIS messages
       case latestMessage.topic.match(/^CROWSNEST\/EXTERNAL\/AIS/)?.input: {
         const incomming = latestMessage.payload.message
